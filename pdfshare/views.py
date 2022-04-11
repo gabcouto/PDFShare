@@ -1,13 +1,20 @@
 from django.shortcuts import render, redirect
+
 from .models import *
 
+
 # Esta view exibe lista de arquivos PDF disponíveis para compra.
-def file_list(request): 
+def file_list(request):
     # TODO: Não exibir mais as que o usuário já comprou
     files = {}
     # Resgatamos todos os arquivos PDF do banco e retornamos.
     files = PDF.objects.all()
     return render(request, 'filelist.html', {'files': files})
+
+
+def save_file(request):
+    return render(request, 'savefile.html')
+
 
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
 def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
@@ -17,7 +24,9 @@ def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
     produto_comprado = PDF.objects.get(pk=pk_produto)
     # Verificamos se o cara tem saldo, mas não informamos se não tem. (TODO)
     # Impedimos de comprar novamente, mas não avisamos (TODO)
-    if (usuario_comprador.pontuacao >= valor_debitado) and (usuario_comprador != usuario_dono) and not Transacao.objects.filter(produto__pk=pk_produto, comprador__pk=pk_comprador):
+    if (usuario_comprador.pontuacao >= valor_debitado) and (
+            usuario_comprador != usuario_dono) and not Transacao.objects.filter(produto__pk=pk_produto,
+                                                                                comprador__pk=pk_comprador):
         # Debitamos pontuação do comprador; adicionamos pontuação ao dono do arquivo.
         usuario_comprador.pontuacao -= valor_debitado
         usuario_dono.pontuacao += valor_debitado
