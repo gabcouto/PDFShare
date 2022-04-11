@@ -19,7 +19,7 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <li>
                         <div style="min-width:12rem;">
-                          <button type="button" class="btn btn-me btn-outline-dark me-2" style="width: 95%; display: block; margin: auto; border: none;">Arquivos adquiridos</button>
+                          <a type="button" href="{% url 'url_files_owned' user.usuario.id %}" class="btn btn-me btn-outline-dark me-2" style="width: 95%; display: block; margin: auto; border: none;">Arquivos adquiridos</a>
                           <button type="button" class="btn btn-me btn-outline-dark me-2" style="width: 95%; display: block; margin: auto; border: none;">Arquivos salvos</button>
                         </div>
                       </li>

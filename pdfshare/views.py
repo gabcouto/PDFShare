@@ -29,3 +29,12 @@ def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
         transacao.save()
     # Este return deve estar com esta identação. É o return do def, e não do if acima.
     return redirect('url_file_list')
+
+
+def files_owned(request, pk_comprador):
+    files = {}
+    files = Transacao.objects.filter(comprador__pk=pk_comprador)
+    return render(request, 'filesowned.html', {'files': files})
+    # TODO: eliminar chatice de aparecer na url.
+    #return redirect('url_files_owned', pk_comprador=files)
+
