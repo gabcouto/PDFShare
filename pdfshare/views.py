@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import *
+from django.contrib.auth.decorators import login_required
+
 
 # Esta view exibe lista de arquivos PDF disponíveis para compra.
+@login_required
 def file_list(request): 
     # TODO: Não exibir mais as que o usuário já comprou
     files = {}
@@ -10,6 +13,7 @@ def file_list(request):
     return render(request, 'filelist.html', {'files': files})
 
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
+@login_required
 def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
     # Resgatamos dados do banco a partir das primary keys fornecidas.
     usuario_comprador = Usuario.objects.get(pk=pk_comprador)
@@ -30,11 +34,13 @@ def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
     # Este return deve estar com esta identação. É o return do def, e não do if acima.
     return redirect('url_file_list')
 
-
-def files_owned(request, pk_comprador):
+# Esta view exibe os PDFs comprados por um determinado usuário.
+@login_required
+def files_owned(request):
     files = {}
-    files = Transacao.objects.filter(comprador__pk=pk_comprador)
+    usuario = Usuario.objects.get(user__id=request.user.id)
+    # Somente exibimos os arquivos dos usuários que não estão devendo pontos.
+    if usuario.pontuacao >= 0:
+        files = Transacao.objects.filter(comprador__pk=usuario.id)
     return render(request, 'filesowned.html', {'files': files})
-    # TODO: eliminar chatice de aparecer na url.
-    #return redirect('url_files_owned', pk_comprador=files)
 
