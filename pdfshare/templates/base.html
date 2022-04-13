@@ -11,7 +11,7 @@
             <div class="container">
               <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">     
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                  <li><a href="#" class="nav-link px-2 text-white nav-text">Home</a></li>
+                  <li><a href="{% url 'home' %}" class="nav-link px-2 text-white nav-text">Home</a></li>
                   <li>
                     <button class="nav-link px-2 text-white nav-button dropdown-toggle dropdown text-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                       Meus Arquivos
@@ -36,13 +36,13 @@
                   <li>
                     <div class="dropdown-radio-item">Forma de pesquisa:</div>
                     <div class="form-check dropdown-radio-item">
-                      <input form="form-pesquisa" class="form-check-input" type="radio" value="arquivo" name="search-type" id="flexRadioDefault1" checked>
+                      <input form="form-pesquisa" class="form-check-input" type="radio" name="search-type" {% if searchtype == "arquivo" or not searchtype %}checked="checked"{% endif %} value="arquivo" id="flexRadioDefault1">
                       <label class="form-check-label" for="flexRadioDefault1">
                         Nome do Arquivo
                       </label>
                     </div>
                     <div class="form-check dropdown-radio-item">
-                      <input form="form-pesquisa" class="form-check-input" type="radio" value="usuario" name="search-type" id="flexRadioDefault2">
+                      <input form="form-pesquisa" class="form-check-input" type="radio" name="search-type" {% if searchtype == "usuario" %}checked="checked"{% endif %} value="usuario" id="flexRadioDefault2">
                       <label class="form-check-label" for="flexRadioDefault2">
                         Nome do Usuário
                       </label>
@@ -52,13 +52,13 @@
                   <li>
                     <div class="dropdown-radio-item">Forma de ordenamento:</div>
                     <div class="form-check dropdown-radio-item">
-                      <input form="form-pesquisa" class="form-check-input" type="radio" value="relevancia" name="search-order" id="flexRadioDefault1">
+                      <input form="form-pesquisa" class="form-check-input" type="radio" value="relevancia" name="search-order" {% if searchorder == "relevancia" %}checked="checked"{% endif %} id="flexRadioDefault1">
                       <label class="form-check-label" for="flexRadioDefault1">
                         Relevancia
                       </label>
                     </div>
                     <div class="form-check dropdown-radio-item">
-                      <input form="form-pesquisa" class="form-check-input" type="radio" value="nota" name="search-order" id="flexRadioDefault2" checked>
+                      <input form="form-pesquisa" class="form-check-input" type="radio" value="nota" name="search-order" {% if searchorder == "nota" or not searchorder %}checked="checked"{% endif %} id="flexRadioDefault2">
                       <label class="form-check-label" for="flexRadioDefault2">
                         Média de avaliações
                       </label>

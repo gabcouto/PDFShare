@@ -7,7 +7,6 @@ from django.views.decorators.csrf import csrf_protect
 @login_required
 @csrf_protect
 def file_list(request): 
-    # TODO: Não exibir mais as que o usuário já comprou
     files = {}
 
     # Criamos estes booleanos para evitar uma sequência de nested ifs mais complexa ainda.
@@ -39,7 +38,8 @@ def file_list(request):
             files = PDF.objects.filter(fileauthor__user__username__contains=request.POST.get('caixa-pesquisa', False)).order_by('-quantidadeNota')
     else:
         files = PDF.objects.all().order_by('-nota')
-    return render(request, 'filelist.html', {'files': files})
+
+    return render(request, 'filelist.html', {'files': files, 'searchtype': request.POST.get('search-type', False), 'searchorder': request.POST.get('search-order', False)})
 
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
 @login_required
