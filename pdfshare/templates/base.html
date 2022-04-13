@@ -36,13 +36,13 @@
                   <li>
                     <div class="dropdown-radio-item">Forma de pesquisa:</div>
                     <div class="form-check dropdown-radio-item">
-                      <input class="form-check-input" type="radio" name="search-type" id="flexRadioDefault1">
+                      <input form="form-pesquisa" class="form-check-input" type="radio" value="arquivo" name="search-type" id="flexRadioDefault1" checked>
                       <label class="form-check-label" for="flexRadioDefault1">
                         Nome do Arquivo
                       </label>
                     </div>
                     <div class="form-check dropdown-radio-item">
-                      <input class="form-check-input" type="radio" name="search-type" id="flexRadioDefault2" checked>
+                      <input form="form-pesquisa" class="form-check-input" type="radio" value="usuario" name="search-type" id="flexRadioDefault2">
                       <label class="form-check-label" for="flexRadioDefault2">
                         Nome do Usuário
                       </label>
@@ -52,21 +52,22 @@
                   <li>
                     <div class="dropdown-radio-item">Forma de ordenamento:</div>
                     <div class="form-check dropdown-radio-item">
-                      <input class="form-check-input" type="radio" name="search-order" id="flexRadioDefault1">
+                      <input form="form-pesquisa" class="form-check-input" type="radio" value="relevancia" name="search-order" id="flexRadioDefault1">
                       <label class="form-check-label" for="flexRadioDefault1">
                         Relevancia
                       </label>
                     </div>
                     <div class="form-check dropdown-radio-item">
-                      <input class="form-check-input" type="radio" name="search-order" id="flexRadioDefault2" checked>
+                      <input form="form-pesquisa" class="form-check-input" type="radio" value="nota" name="search-order" id="flexRadioDefault2" checked>
                       <label class="form-check-label" for="flexRadioDefault2">
                         Média de avaliações
                       </label>
                     </div>
                   </li>
                 </ul>
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                  <input type="search" class="form-control form-control-dark" placeholder="Pesquise..." aria-label="Search">
+                <form action="/search/" method="post" id="form-pesquisa" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                  {% csrf_token %}
+                  <input type="search" class="form-control form-control-dark" name="caixa-pesquisa" placeholder="Pesquise..." aria-label="Search">
                 </form>
                 
                 <button class="btn btn-outline-light dropdown-toggle dropdown text-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

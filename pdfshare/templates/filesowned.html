@@ -33,15 +33,15 @@
                   <a type="button" href="#" class="btn btn-outline-dark me-2">Detalhes</a>
                   {% if file.produto.filesize < 500 %}
                     {% if file.produto.nota < 9 or file.produto.quantidadeNota < 10 %}
-                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 5 %}" class="btn btn-dark me-2">Adquirir</a>
+                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 5 %}" class="btn btn-dark me-2">Baixar</a>
                     {% else %}
-                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 10 %}" class="btn btn-dark me-2">Adquirir</a>
+                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 10 %}" class="btn btn-dark me-2">Baixar</a>
                     {% endif %}
                   {% else %}
                     {% if file.produto.nota < 9 or file.produto.quantidadeNota < 10 %} 
-                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 10 %}" class="btn btn-dark me-2">Adquirir</a>
+                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 10 %}" class="btn btn-dark me-2">Baixar</a>
                     {% else %}
-                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 15 %}" class="btn btn-dark me-2">Adquirir</a>
+                    <a type="button" href="{% url 'url_update_compra' user.usuario.id file.produto.fileauthor.id file.produto.id 15 %}" class="btn btn-dark me-2">Baixar</a>
                     {% endif %}
                   {% endif %}
                 </div>

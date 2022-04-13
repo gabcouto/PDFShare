@@ -1,15 +1,44 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.csrf import csrf_protect
 
 # Esta view exibe lista de arquivos PDF disponíveis para compra.
 @login_required
+@csrf_protect
 def file_list(request): 
     # TODO: Não exibir mais as que o usuário já comprou
     files = {}
-    # Resgatamos todos os arquivos PDF do banco e retornamos.
-    files = PDF.objects.all()
+
+    # Criamos estes booleanos para evitar uma sequência de nested ifs mais complexa ainda.
+    arquivoEnota = request.POST.get('search-type', False) == "arquivo" and request.POST.get('search-order', False) == "nota"
+    arquivoErelevancia = request.POST.get('search-type', False) == "arquivo" and request.POST.get('search-order', False) == "relevancia"
+    usuarioEnota = request.POST.get('search-type', False) == "usuario" and request.POST.get('search-order', False) == "nota"
+    usuarioErelevancia = request.POST.get('search-type', False) == "usuario" and request.POST.get('search-order', False) == "relevancia"
+    espacovazio = request.POST.get('caixa-pesquisa', False) == ""
+    
+    if arquivoEnota:
+        if espacovazio:
+            files = PDF.objects.all().order_by('-nota')
+        else:
+            files = PDF.objects.filter(filename=request.POST.get('caixa-pesquisa', False)).order_by('-nota')
+    elif arquivoErelevancia:
+        if espacovazio:
+            files = PDF.objects.all().order_by('-quantidadeNota')
+        else:
+            files = PDF.objects.filter(filename=request.POST.get('caixa-pesquisa', False)).order_by('-quantidadeNota')
+    elif usuarioEnota:
+        if espacovazio:
+            files = PDF.objects.all().order_by('-nota')
+        else:
+            files = PDF.objects.filter(fileauthor__user__username__contains=request.POST.get('caixa-pesquisa', False)).order_by('-nota')
+    elif usuarioErelevancia:
+        if espacovazio:
+            files = PDF.objects.all().order_by('-quantidadeNota')
+        else:
+            files = PDF.objects.filter(fileauthor__user__username__contains=request.POST.get('caixa-pesquisa', False)).order_by('-quantidadeNota')
+    else:
+        files = PDF.objects.all().order_by('-nota')
     return render(request, 'filelist.html', {'files': files})
 
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
