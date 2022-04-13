@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
+{% load starlize %}
 {% block title %}Search{% endblock %}
 {% block content %}
             <div class="container-lg main-content-container">
-              {% load myextras %}
               {% for file in files %}
               <div class="row pdf-item">
                 <div class="col">
                   {{file.filename}}
                 </div>
                 <div class="col">
-                  {{file.nota }}
+                  {% for star in file.nota|starlize %}
+                    {% if star == 0 %}
+                      <i class="bi bi-star-fill"></i>
+                    {% elif star == 1 %}
+                      <i class="bi bi-star-half"></i>
+                    {% else %}
+                      <i class="bi bi-star"></i>
+                    {% endif %}
+                  {% endfor %}
                 </div>
                 <div class="col">
                   {% if file.filesize < 500 %}
