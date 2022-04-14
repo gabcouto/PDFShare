@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+import os
 
 # Esta view exibe lista de arquivos PDF disponíveis para compra.
 @login_required
@@ -44,6 +45,7 @@ def file_list(request):
 @login_required
 def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
     # Resgatamos dados do banco a partir das primary keys fornecidas.
+    # Temos que salvar por quanto foi vendido o produto, porque o preço vai variando.
     usuario_comprador = Usuario.objects.get(pk=pk_comprador)
     usuario_dono = Usuario.objects.get(pk=pk_dono)
     produto_comprado = PDF.objects.get(pk=pk_produto)
@@ -54,7 +56,7 @@ def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
         usuario_comprador.pontuacao -= valor_debitado
         usuario_dono.pontuacao += valor_debitado
         # Registramos a transação.
-        transacao = Transacao(produto=produto_comprado, comprador=usuario_comprador)
+        transacao = Transacao(produto=produto_comprado, comprador=usuario_comprador, preco=valor_debitado)
         # Salvamos as alterações no banco.
         usuario_comprador.save()
         usuario_dono.save()
@@ -71,4 +73,36 @@ def files_owned(request):
     if usuario.pontuacao >= 0:
         files = Transacao.objects.filter(comprador__pk=usuario.id)
     return render(request, 'filesowned.html', {'files': files})
+
+
+@login_required
+def files_saved(request):
+    files = {}
+    usuario = Usuario.objects.get(user__id=request.user.id)
+    # Somente exibimos os arquivos dos usuários que não estão devendo pontos.
+    files = PDF.objects.filter(fileauthor__pk=usuario.id)
+    return render(request, 'filessaved.html', {'files': files})
+
+
+# Esta view tem como funcionalidade remover dados no banco.
+@login_required
+def remove_file(request, pk_produto):
+    # Resgatamos dados do banco a partir das primary keys fornecidas.
+    produto = PDF.objects.get(pk=pk_produto)
+    usuario_dono = produto.fileauthor
+    
+    for transaction in Transacao.objects.filter(produto__pk=pk_produto):
+        usuario_dono.pontuacao -= transaction.preco
+        usuario_dono.save()
+        transaction.comprador.pontuacao += transaction.preco
+        transaction.comprador.save()
+        transaction.delete()
+
+    # Apagamos o arquivo dos nossos diretórios:
+    if os.path.isfile(produto.filepath + produto.filename):
+       os.remove(produto.filepath + produto.filename)
+    # Por fim, apagamos a entrada do banco:
+    produto.delete()
+    # Este return deve estar com esta identação. É o return do def, e não do if acima.
+    return redirect('url_files_saved')
 

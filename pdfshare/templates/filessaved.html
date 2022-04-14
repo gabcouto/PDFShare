@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load starlize %}
+{% block title %}Files Saved{% endblock %}
+{% block content %}
+            <div class="container-lg main-content-container">
+              {% for file in files %}
+              <div class="row pdf-item">
+                <div class="col">
+                  {{file.filename}}
+                </div>
+                <div class="col">
+                  {% for star in file.nota|starlize %}
+                    {% if star == 0 %}
+                      <i class="bi bi-star-fill"></i>
+                    {% elif star == 1 %}
+                      <i class="bi bi-star-half"></i>
+                    {% else %}
+                      <i class="bi bi-star"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="col">
+                  {% if file.filesize < 500 %}
+                    {% if file.nota < 9 or file.quantidadeNota < 10 %}
+                      05 Pontos
+                    {% else %}
+                      10 Pontos
+                    {% endif %}
+                  {% else %}
+                    {% if file.nota < 9 or file.quantidadeNota < 10 %} 
+                      10 Pontos
+                    {% else %}
+                      15 Pontos
+                    {% endif %}
+                  {% endif %}
+                </div>
+                <div class="col">
+                  {{file.filesize}} KBs
+                </div>
+                <div class="col">
+                  <a type="button" href="#" class="btn btn-outline-dark me-2">Detalhes</a>
+                  {% if file.filesize < 500 %}
+                    {% if file.nota < 9 or file.quantidadeNota < 10 %}
+                    <a type="button" href="{% url 'url_remove_file' file.id %}" class="btn btn-dark me-2">Remover</a>
+                    {% else %}
+                    <a type="button" href="{% url 'url_remove_file' file.id %}" class="btn btn-dark me-2">Remover</a>
+                    {% endif %}
+                  {% else %}
+                    {% if file.nota < 9 or file.quantidadeNota < 10 %} 
+                    <a type="button" href="{% url 'url_remove_file' file.id %}" class="btn btn-dark me-2">Remover</a>
+                    {% else %}
+                    <a type="button" href="{% url 'url_remove_file' file.id %}" class="btn btn-dark me-2">Remover</a>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+              <div  class="d-flex justify-content-center">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                  <button type="button" class="btn btn-outline-dark">
+                    <i class="bi bi-caret-left-fill"></i>
+                  </button>
+                  <button type="button" class="btn btn-dark">1</button>
+                  <button type="button" class="btn btn-outline-dark">2</button>
+                  <button type="button" class="btn btn-outline-dark">3</button>
+                  <button type="button" class="btn btn-outline-dark">4</button>
+                  <button type="button" class="btn btn-outline-dark">5</button>
+                  <button type="button" class="btn btn-outline-dark">
+                    <i class="bi bi-caret-right-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+{% endblock %}

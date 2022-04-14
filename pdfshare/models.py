@@ -28,3 +28,4 @@ class Transacao(models.Model):
     # Toda transação possui um produto e um comprador. Esta classe é necessária.
     produto = models.ForeignKey(PDF, on_delete=models.RESTRICT, null=True)
     comprador = models.ForeignKey(Usuario, on_delete=models.RESTRICT, null=True)
+    preco = models.IntegerField(null=True)
