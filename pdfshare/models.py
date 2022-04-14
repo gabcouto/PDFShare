@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 
 # Create your models here.
 
@@ -28,3 +29,8 @@ class Transacao(models.Model):
     # Toda transação possui um produto e um comprador. Esta classe é necessária.
     produto = models.ForeignKey(PDF, on_delete=models.RESTRICT, null=True)
     comprador = models.ForeignKey(Usuario, on_delete=models.RESTRICT, null=True)
+
+class FormContato(forms.ModelForm):
+    class Meta:
+        model = PDF
+        exclude=('quantidadeNota', 'nota',)

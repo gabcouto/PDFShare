@@ -1,3 +1,18 @@
 {%extends 'basePagePdfShare.html'%}
+{%block 'content'%}
+    <div class="container">
+        <form action="{%url 'url_save_file'%}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="table">
+                {{form}}
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" class="btn btn-dark">Salvar Arquivo</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{%endblock%}
 
 

@@ -1,4 +1,6 @@
+from django.core.checks import messages
 from django.shortcuts import render, redirect
+
 
 from .models import *
 
@@ -13,7 +15,17 @@ def file_list(request):
 
 
 def save_file(request):
-    return render(request, 'savefile.html')
+    if request.method!= 'POST':
+        form = FormContato()
+        return render(request, 'savefile.html', {'form': form})
+    form = FormContato(request.POST)
+
+    if form.is_valid():
+        form = FormContato(request.POST)
+        form.save()
+    return redirect('url_save_file')
+
+
 
 
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
