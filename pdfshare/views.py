@@ -1,4 +1,4 @@
-from django.core.checks import messages
+from django.contrib import messages
 from django.shortcuts import render, redirect
 
 
@@ -15,14 +15,22 @@ def file_list(request):
 
 
 def save_file(request):
-    if request.method!= 'POST':
+    if request.method != 'POST':
         form = FormContato()
         return render(request, 'savefile.html', {'form': form})
-    form = FormContato(request.POST)
+    form = FormContato(request.POST, request.FILES)
+
+    if not 'PDF' in request.FILES['filepath'].name.upper():
+        messages.error(request, 'Arquivo não é do tipo PDF')
+        form = FormContato(request.POST)
+        return render(request, 'savefile.html', {'form': form})
 
     if form.is_valid():
-        form = FormContato(request.POST)
-        form.save()
+        form = FormContato(request.POST, request.FILES)
+        new_form= form.save(commit=False)
+        aux_filesize = request.FILES['filepath'].read()
+        new_form.filesize = len(aux_filesize)/1000
+        new_form.save()
     return redirect('url_save_file')
 
 

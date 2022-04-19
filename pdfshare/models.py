@@ -1,9 +1,15 @@
+import os.path
+
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
 from django.contrib.auth.models import User
+
+from projeto.settings import BASE_DIR
 
 
 class Usuario(models.Model):
@@ -18,10 +24,13 @@ class Usuario(models.Model):
 class PDF(models.Model):
     filename = models.CharField(max_length=100)
     fileauthor = models.ForeignKey(Usuario, on_delete=models.RESTRICT, null=True) # TODO: garantir que se eu excluir um arquivo eu nao exclua o usuario; mas nao o contrario.
-    filesize = models.IntegerField(null=True)
-    nota = models.IntegerField(default=0) # colocar valor padrao 0
-    quantidadeNota = models.IntegerField(default=0) # colocar valor padrao 0
-    filepath = models.CharField(max_length=250, null=True) # TODO: Deveria estar null=True?
+    nota = models.IntegerField(default=0)
+    quantidadeNota = models.IntegerField(default=0)
+    filepath=models.FileField(upload_to='images\\trabalho ESN',
+                     validators=[FileExtensionValidator(['pdf'])],
+                              blank=True,
+                              null=True,)
+    filesize = models.IntegerField(default=0)
     def __str__(self):
         return self.filename
 
@@ -33,4 +42,9 @@ class Transacao(models.Model):
 class FormContato(forms.ModelForm):
     class Meta:
         model = PDF
-        exclude=('quantidadeNota', 'nota',)
+        fields=('filename','fileauthor' ,'filepath')
+        labels = {
+            'filename': _('Titulo'),
+            'fileauthor': _('Criado Por'),
+            'filepath': _('Arquivo'),
+        }
