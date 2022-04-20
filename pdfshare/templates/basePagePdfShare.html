@@ -28,7 +28,12 @@
                                     adquiridos
                                 </button>
                                 <button type="button" class="btn btn-me btn-outline-dark me-2"
-                                        style="width: 95%; display: block; margin: auto; border: none;">Arquivos salvos
+                                        style="width: 95%; display: block; margin: auto; border: none;">
+                                    <a href="{% url 'url_my_files' user.usuario.id%} "
+                                       style="text-decoration:none; color: inherit;">
+                                        <!--                                        bug no color: inherit não sei como deixar com o padrão do css-->
+                                        Arquivos Salvos
+                                    </a>
                                 </button>
                             </div>
                         </li>

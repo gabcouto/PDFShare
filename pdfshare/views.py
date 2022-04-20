@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-
 from .models import *
 
 
@@ -25,16 +24,41 @@ def save_file(request):
         form = FormContato(request.POST)
         return render(request, 'savefile.html', {'form': form})
 
+    filesize = len(request.FILES['filepath'].read()) / 1000
+    form = FormContato(request.POST)
+    if filesize < 200:
+        messages.error(request, 'Arquivo menor que 200Kbs')
+        return render(request, 'savefile.html', {'form': form})
+    elif filesize > 10000:
+        messages.error(request, 'Arquivo maior que 10000Kbs')
+        return render(request, 'savefile.html', {'form': form})
+
     if form.is_valid():
         form = FormContato(request.POST, request.FILES)
-        new_form= form.save(commit=False)
+        new_form = form.save(commit=False)
+        ownerPdf = new_form.fileauthor.id
+        add_points(ownerPdf)
         aux_filesize = request.FILES['filepath'].read()
-        new_form.filesize = len(aux_filesize)/1000
+        new_form.filesize = len(aux_filesize) / 1000
         new_form.save()
     return redirect('url_save_file')
 
 
+def add_points(ownerPdfId):
+    owner = Usuario.objects.get(pk=ownerPdfId)
+    owner.pontuacao += 15
+    owner.save()
+    redirect('url_save_file')
 
+
+def valid_filesize(request, filesize):
+    if filesize < 200:
+        messages.error(request, 'Arquivo menor que 200Kbs')
+        return False
+    elif filesize > 10000:
+        messages.error(request, 'Arquivo maior que 10000Kbs')
+        return False
+    return True
 
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
 def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
@@ -58,3 +82,11 @@ def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
         transacao.save()
     # Este return deve estar com esta identação. É o return do def, e não do if acima.
     return redirect('url_file_list')
+
+
+def my_files(request, pk_usuario):
+    # TODO: Não exibir mais as que o usuário já comprou
+    files = {}
+    # Resgatamos todos os arquivos PDF do banco e retornamos.
+    files = PDF.objects.all()
+    return render(request, 'myfiles.html', {'files': files})

@@ -1,15 +1,11 @@
-import os.path
-
+from django import forms
+from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django import forms
 from django.utils.translation import gettext_lazy as _
 
+
 # Create your models here.
-
-from django.contrib.auth.models import User
-
-from projeto.settings import BASE_DIR
 
 
 class Usuario(models.Model):
