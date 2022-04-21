@@ -10,5 +10,6 @@ urlpatterns = [
          name='url_update_compra'),  # Página serve para atualizar dados no banco quando for efetuada compra.
     path('conta/', include("django.contrib.auth.urls")),
     path('save_file/', views.save_file, name='url_save_file'),  # Pagina que salva arquivos
-    path('my_files/<int:pk_usuario>/', views.my_files, name='url_my_files'),  # Pagina arquivos salvos
+    path('my_files/', views.my_files, name='url_my_files'),  # Pagina arquivos salvos
+    path('edit_file/<int:pk_pdf>/', views.edit_file, name='url_edit_file')
 ]

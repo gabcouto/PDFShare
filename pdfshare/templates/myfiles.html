@@ -32,7 +32,7 @@
             </div>
             <div class="col">
                 <a type="button" href="#" class="btn btn-outline-dark me-2">Detalhes</a>
-                <a type="button" href="" class="btn btn-dark me-2">Editar</a>
+                <a type="button" href="{% url 'url_edit_file' file.id%}" class="btn btn-dark me-2">Editar</a>
             </div>
         </div>
         {% endif %}
