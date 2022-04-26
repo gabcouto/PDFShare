@@ -9,8 +9,9 @@ urlpatterns = [
     path('update_compra/<int:pk_comprador>/<int:pk_dono>/<int:pk_produto>/<int:valor_debitado>/', views.update_compra,
          name='url_update_compra'),  # Página serve para atualizar dados no banco quando for efetuada compra.
     path('conta/', include("django.contrib.auth.urls")),
-    path('save_file/', views.save_file, name='url_files_saved'),  # Pagina que salva arquivos
-    path('my_files/', views.my_files, name='url_my_files'),  # Pagina arquivos salvos
+    path('save_file/', views.save_file, name='url_save_file'),  # Pagina que salva arquivos
+    path('comprados/', views.files_owned, name='url_files_owned'),
+    path('files_saved/', views.files_saved, name='url_files_saved'),  # Pagina arquivos salvos
     path('remove_file/<int:pk_produto>/', views.remove_file, name='url_remove_file'),
     path('edit_file/<int:pk_pdf>/', views.edit_file, name='url_edit_file')
 ]

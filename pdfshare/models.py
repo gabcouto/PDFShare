@@ -8,6 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
+
+
 class Usuario(models.Model):
     # Nós precisamos usar a classe User do Django, mas ela não pode ser alterada. Contudo, nós precisamos que o usuário tenha o parâmetro 'pontuacao'. Por isso, criamos um modelo 'Usuario' que possui um parâmetro 'User'.
     user = models.OneToOneField(User, on_delete=models.CASCADE) # TODO: revisar se o 'CASCADE' é apropriado.
@@ -45,6 +47,7 @@ class Transacao(models.Model):
     # Toda transação possui um produto e um comprador. Esta classe é necessária.
     produto = models.ForeignKey(PDF, on_delete=models.RESTRICT, null=True)
     comprador = models.ForeignKey(Usuario, on_delete=models.RESTRICT, null=True)
+    preco = models.IntegerField(null=True)
 
 class FormPdf(forms.ModelForm):
     class Meta:
