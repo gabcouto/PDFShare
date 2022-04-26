@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+{%block content%}
+<div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert {{message.tags }}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <table class="table">
+            {{form}}
+            <tr>
+                <td colspan="2">
+                    <button type="submit" class="btn btn-dark">Atualizar Arquivo</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    </div>
+    {%endblock%}
