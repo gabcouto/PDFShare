@@ -33,8 +33,7 @@ class PDF(models.Model):
     fileauthor = models.ForeignKey(Usuario, on_delete=models.RESTRICT, null=True) # TODO: garantir que se eu excluir um arquivo eu nao exclua o usuario; mas nao o contrario.
     nota = models.IntegerField(default=0)
     quantidadeNota = models.IntegerField(default=0)
-    filepath=models.FileField(upload_to=BASE_DIR.__str__()+"/pdfs",
-                     validators=[FileExtensionValidator(['pdf'])],
+    filepath=models.FileField(validators=[FileExtensionValidator(['pdf'])],
                               blank=True,
                               null=True,)
     filesize = models.IntegerField(default=0)

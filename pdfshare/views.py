@@ -56,6 +56,7 @@ def file_list(request):
                                              'searchorder': request.POST.get('search-order', False)})
 
 
+@login_required
 # Esta view tem como funcionalidade atualizar dados no banco quando for efetuada compra.
 def update_compra(request, pk_comprador, pk_dono, pk_produto, valor_debitado):
     usuario_comprador = Usuario.objects.get(pk=pk_comprador)
@@ -130,8 +131,8 @@ def remove_file(request, pk_produto):
         transaction.delete()
 
     # Apagamos o arquivo dos nossos diretórios:
-    if os.path.isfile(produto.filepath.__str__ + produto.filename) #TODO para pegar o caminho correto e remover o arquivo
-        os.remove(produto.filepath + produto.filename)
+    if os.path.isfile(produto.filepath.path):
+        os.remove(produto.filepath.path)
     # Por fim, apagamos a entrada do banco:
     produto.delete()
     # Este return deve estar com esta identação. É o return do def, e não do if acima.

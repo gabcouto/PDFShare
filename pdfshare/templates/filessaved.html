@@ -34,26 +34,40 @@
             {% endif %}
             {% endif %}
         </div>
-        <div class="col">
+        <div class="col" style="width:40px">
             {{file.filesize}} KBs
         </div>
-        <div style="width:30px;">
-                <a type="button" href="#" class="btn btn-outline-dark me-2" >Detalhes</a>
-                {% if file.filesize < 500 %}
-                {% if file.nota < 9 or file.quantidadeNota < 10 %}
-                <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2">Remover</a>
-                {% else %}
-                <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2">Remover</a>
-                {% endif %}
-                {% else %}
-                {% if file.nota < 9 or file.quantidadeNota < 10 %}
-                <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2">Remover</a>
-                {% else %}
-                <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2">Remover</a>
-                {% endif %}
-                {% endif %}
-                <a type="button" href="{% url 'url_edit_file' file.id%}" class="btn btn-dark me-2">Editar</a>
-<!--            TODO BOTAR OS 3 BOTOES EM UMA LIHA SÓ-->
+        <div class="col">
+                <button class="nav-link px-2 text-white nav-button dropdown-toggle dropdown text-end" type="button"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Opções
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <div style="min-width:12rem;">
+                            <a type="button" href="#" class="btn btn-dark me-2"
+                               style="width: 95%; display: block; margin: 0 auto 1px; border: none;">Detalhes</a>
+                            {% if file.filesize < 500 %}
+                            {% if file.nota < 9 or file.quantidadeNota < 10 %}
+                            <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2"
+                               style="width: 95%; display: block; margin: 1px auto 1px; border: none;">Remover</a>
+                            {% else %}
+                            <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2"
+                               style="width: 95%; display: block; margin: 1px auto 1px; border: none;">Remover</a>
+                            {% endif %}
+                            {% else %}
+                            {% if file.nota < 9 or file.quantidadeNota < 10 %}
+                            <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2"
+                               style="width: 95%; display: block; margin: 1px auto 1px; border: none;">Remover</a>
+                            {% else %}
+                            <a type="button" href="{% url 'url_remove_file' file.id%}" class="btn btn-dark me-2"
+                               style="width: 95%; display: block; margin: 1px auto 1px; border: none;">Remover</a>
+                            {% endif %}
+                            {% endif %}
+                            <a type="button" href="{% url 'url_edit_file' file.id%}" class="btn btn-dark me-2"
+                               style="width: 95%; display: block; margin: 1px auto 0; border: none;">Editar</a>
+                        </div>
+                    </li>
         </div>
     </div>
     {% endfor %}

@@ -5,7 +5,11 @@ a.nav-text{
 a.nav-text:hover{
     opacity: 0.6;
 }
-
+#outer
+{
+    width:100%;
+    text-align: center;
+}
 button.nav-button{
     border-radius: 1rem;
     transition: all .2s linear;
