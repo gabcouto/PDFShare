@@ -3,15 +3,6 @@
 <div class="container">
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <div class="alert {{message.tags }}" role="alert">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </ul>
-        {% endif %}
         <table class="table">
             {{form}}
             <tr>

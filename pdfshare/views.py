@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
-from .models import *
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
 import os
+
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+
+from .models import *
 
 ADMIN_ID = 1
 TAM_MAX = 10000
@@ -193,6 +195,15 @@ def edit_file(request, pk_pdf):
         if not 'PDF' in request.FILES['filepath'].name.upper():
             messages.error(request, 'Arquivo não é do tipo PDF')
             form = FormEditPdf(request.POST, instance=pdf)
+            return render(request, 'editfile.html', {'form': form})
+
+        filesize = request.FILES['filepath'].size / 1024
+        form = FormEditPdf(request.POST)
+        if filesize < TAM_MIN:
+            messages.error(request, 'Arquivo menor que 200Kbs')
+            return render(request, 'editfile.html', {'form': form})
+        elif filesize > TAM_MAX:
+            messages.error(request, 'Arquivo maior que 10000Kbs')
             return render(request, 'editfile.html', {'form': form})
 
         if form.is_valid():
