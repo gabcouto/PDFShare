@@ -9,6 +9,7 @@ from .models import *
 
 ADMIN_ID = 1
 TAM_MAX = 10000
+TAM_X = 3000
 TAM_MIN = 200
 
 
@@ -170,7 +171,7 @@ def save_file(request):
             add_points(ownerPdf)
             aux_filesize = request.FILES['filepath'].size
             new_form.filesize = aux_filesize / 1024
-            if new_form.fileauthor.id != ADMIN_ID:
+            if new_form.filesize > TAM_X:
                 new_form.status = 'd'
             new_form.save()
             return redirect('url_file_list')
