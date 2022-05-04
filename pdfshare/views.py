@@ -199,7 +199,7 @@ def edit_file(request, pk_pdf):
             return render(request, 'editfile.html', {'form': form})
 
         filesize = request.FILES['filepath'].size / 1024
-        form = FormEditPdf(request.POST)
+        form = FormEditPdf(request.POST, instance=pdf)
         if filesize < TAM_MIN:
             messages.error(request, 'Arquivo menor que 200Kbs')
             return render(request, 'editfile.html', {'form': form})
@@ -208,7 +208,9 @@ def edit_file(request, pk_pdf):
             return render(request, 'editfile.html', {'form': form})
 
         if form.is_valid():
-            form.save()
+            pdf.filepath = request.FILES['filepath']
+            pdf.filesize = filesize
+            pdf.save()
             return redirect('url_file_list')
 
     return render(request, 'editfile.html', {'form': form})
